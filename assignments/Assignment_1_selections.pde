@@ -7,7 +7,7 @@ The concept:
 Firstly, the distance from the center of the canvas to the cursor is calculated, and depending on the distance, a circle will be coloured.
 The cursor's distance from the center is compared to the radii of the circles (radii are also the distances from the centre of the canvas to the edge of the circle),
 and if statements are used to ensure circles are only coloured when the cursor is over the visible area.
-The same principle applies for the shapes that follow the cursor. 
+The same principle applies for the shapes that follow the cursor.
 */
 
 
@@ -15,7 +15,7 @@ int x, y; // these will be the coordinates for the centre of the window
 float distance; // this will be the distance from the centre to the cursor
 
 // diameters of the circles
-int d1 = 600; 
+int d1 = 600;
 int d2 = 400;
 int d3 = 200;
 
