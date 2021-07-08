@@ -26,7 +26,7 @@ int r3 = d3/2;
 
 void setup() {
   size(660, 660);
-  x = width/2; // calucating the coordinates of the middle of the window
+  x = width/2; // calculating the coordinates of the middle of the window
   y = height/2;
 }
 
