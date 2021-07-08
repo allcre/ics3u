@@ -29,7 +29,7 @@ void draw() {
     for (int x = 0; x <= width; x += midpoint) { // for each x-value on the grid, including 0, 300, and 600
       for (int i = 0; i <= midpoint; i += 20) { // 20px interval between lines, stop drawing lines before iterations of the interval have surpassed half the width of the canvas
 
-        if ((x != midpoint) || (y != midpoint)) // if the point on the grid is not the center one (becuase these parabolas will be a different colour)
+        if ((x != midpoint) || (y != midpoint)) // if the point on the grid is not the center one (because these parabolas will be a different colour)
           stroke(154, 177, 167); // teal colour
         else // if the parabolas are being drawn around the middle point
         stroke(34, 60, 73); // navy/black colour
