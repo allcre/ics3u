@@ -1,3 +1,9 @@
+/*
+Circular Collision Detection
+Assignment 3
+Allison Cretel
+*/
+
 int bounceRad = 60;  // radius of the bouncing ball
 int mouseRad = 15;   // radius of the ball that follows the mouse
 
