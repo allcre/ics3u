@@ -2,6 +2,11 @@
 Circular Collision Detection
 Assignment 3
 Allison Cretel
+ 
+The program checks if the distance between the center of the bouncing ball and the center of the player's ball is less than the combined radiuses of both balls,
+because this means that they are colliding. If the condition is met, the radius of the ball decreases and the speed increases.
+The program also checks if the radius of the bouncing ball is less or equal to 0, becuase then the game is over (which means the player's ball is no longer drawn) and a winning message is displayed. 
+This also prevents the bouncing ball from reappearing, becuase once the radius becomes negative and continues to shrink, the ball grows larger (I have no clue why this happens)
 */
 
 int bounceRad = 60;  // radius of the bouncing ball
