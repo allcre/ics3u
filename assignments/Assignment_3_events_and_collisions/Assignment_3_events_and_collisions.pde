@@ -57,11 +57,18 @@ void draw() {
   if (yPos > height - bounceRad || yPos < bounceRad) 
     yDirection *= -1;
 
-
   // draw the shape of the bouncing ball
   ellipse(xPos, yPos, bounceRad, bounceRad);
 
-  // small white circle that follows the mouse
-  fill(255); // colours future shapes white
-  ellipse(mouseX, mouseY, mouseRad, mouseRad);
+  // if radius of the bouncing ball is less than or equal to zero display winning message
+  if (bounceRad <= 0) {
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("You won!", 320, 160);
+  } 
+  // if the bouncing ball is still visible continue drawing the small white ball that follows the cursor
+  else {
+    fill(255);
+    ellipse(mouseX, mouseY, mouseRad, mouseRad);
+  }
 }
