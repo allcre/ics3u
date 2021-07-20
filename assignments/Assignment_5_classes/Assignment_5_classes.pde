@@ -1,4 +1,11 @@
-// array of objects to store all triangles 
+/*
+Triangle Class with Parallax
+Assignment 5
+Allison Cretel
+*/
+
+
+// array of objects to store all triangles
 Triangle[][] triangles;
 
 void setup() {
@@ -25,7 +32,7 @@ void setup() {
         break;
 
         // if in the last row, create a forground triangle
-      default: 
+      default:
         triangles[i][j] = new Triangle("foreground");
       }
     }
@@ -48,7 +55,7 @@ void draw() {
 // triangle class
 class Triangle {
 
-  // data 
+  // data
   String type; // background, midground, or foreground
   color colour; // colour of the triangle
   float circumradius; // circumradius of the triangle (distance from the center of an equilateral triangle to a vertex)
@@ -59,7 +66,7 @@ class Triangle {
 
   // initial position of the triangle
   float x = random(width); // random x-coordinate
-  float y = random(height); // random y-coordinate 
+  float y = random(height); // random y-coordinate
 
   // constructor with type argument
   Triangle(String tempType) {
@@ -101,14 +108,14 @@ class Triangle {
 
     // "make" a new coordinate plane where the origin is located at (x, y), the center of the triangle
     pushMatrix();
-    translate(x, y); 
+    translate(x, y);
 
     // rotate the plane by the random degrees value
     rotate(radians(degrees));
 
     // draw an equilateral triangle with the origin as the center of the triangle
-    triangle(0, 0 - circumradius, 
-      circumradius * cos(PI/6), circumradius * sin(PI/6), 
+    triangle(0, 0 - circumradius,
+      circumradius * cos(PI/6), circumradius * sin(PI/6),
       0 - circumradius * cos(PI/6), circumradius * sin(PI/6));
 
     // add the rotation speed to the degrees variable
