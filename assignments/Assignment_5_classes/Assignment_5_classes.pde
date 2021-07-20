@@ -1,8 +1,8 @@
 /*
 Triangle Class with Parallax
-Assignment 5
-Allison Cretel
-*/
+ Assignment 5
+ Allison Cretel
+ */
 
 
 // array of objects to store all triangles
@@ -114,8 +114,8 @@ class Triangle {
     rotate(radians(degrees));
 
     // draw an equilateral triangle with the origin as the center of the triangle
-    triangle(0, 0 - circumradius,
-      circumradius * cos(PI/6), circumradius * sin(PI/6),
+    triangle(0, 0 - circumradius, 
+      circumradius * cos(PI/6), circumradius * sin(PI/6), 
       0 - circumradius * cos(PI/6), circumradius * sin(PI/6));
 
     // add the rotation speed to the degrees variable
