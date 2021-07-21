@@ -1,9 +1,18 @@
 /*
 Triangle Class with Parallax
- Assignment 5
- Allison Cretel
- */
+Assignment 5
+Allison Cretel
 
+For this assignment, I implented the use of pushMatrix() and popMatrix() to rotate the triangles around their centers, since the origin of the triangle is located at
+the origin of the plane. The plane is then rotated with the rotate() function, and the triangle is redrawn around the origin. To ensure the triangle is an equilateral triangle
+and it rotates around its center, I used trigonometric functions and a circumradius measurement so that an equilateral triangle can be drawn with any point as its centroid. 
+
+In the Triangle constructor, depending on which type is passed through the argument, variables for the traingles' size, speed, colour, etc. are appropriately assigned,
+and these variables are used in the class' methods.
+
+I created two methods in the Triangle function, rotateTrig() and moveDown(). Having two methods organises the code and makes it easier to debug, 
+and there's not an unnecessarily large number of functions to call in the draw function. 
+ */
 
 // array of objects to store all triangles
 Triangle[][] triangles;
@@ -73,7 +82,7 @@ class Triangle {
 
     type = tempType; // passing the argument to the type variable
 
-    // assigning variables based on the type of triangle
+    // initializing variables based on the type of triangle
     switch(type) {
 
       // if a background triangle, assign slow speeds and a small size
@@ -110,13 +119,13 @@ class Triangle {
     pushMatrix();
     translate(x, y);
 
-    // rotate the plane by the random degrees value
+    // rotate the plane by the degrees value
     rotate(radians(degrees));
 
     // draw an equilateral triangle with the origin as the center of the triangle
     triangle(0, 0 - circumradius, 
-      circumradius * cos(PI/6), circumradius * sin(PI/6), 
-      0 - circumradius * cos(PI/6), circumradius * sin(PI/6));
+      circumradius * cos(PI/6), circumradius * 0.5, // 0.5 = sin(PI/6)
+      0 - circumradius * cos(PI/6), circumradius * 0.5);
 
     // add the rotation speed to the degrees variable
     degrees += rotateSpeed;
