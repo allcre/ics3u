@@ -1,3 +1,5 @@
+// ELLIPSE MODE IS CORNER
+
 void setup() {
   size(675, 675);
 }
