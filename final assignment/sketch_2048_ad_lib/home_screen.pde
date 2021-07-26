@@ -4,6 +4,8 @@ int modeWidth, modeHeight;
 color navy;
 
 void homeScreen() {
+  //atInstructions = false;
+  
   textFont(loadFont("ProcessingSansPro-Semibold-48.vlw"));
   fill(255); // white
   textSize(70);
