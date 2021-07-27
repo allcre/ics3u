@@ -4,10 +4,10 @@ void gameSetup() {
   fill(255);
   textSize(45);
   textAlign(LEFT, TOP);
-  text("2048: Ab Libitium", 20, 33);
+  text("2048: Ad Libitium", 20, 33);
 
   // boxes that show current score and high score
-  currentScoreBox = new ScoreBox("current score", score);
-  highScoreBox = new ScoreBox("high score", highScore);
+  currentScoreBox = new ScoreBox("current score", board.score);
+  highScoreBox = new ScoreBox("high score", board.highScore);
 
 }

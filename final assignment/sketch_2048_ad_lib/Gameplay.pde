@@ -13,6 +13,10 @@ class Gameplay {
   int j = 0;
   String direction; // direction of move
   boolean moved; // tracks if at least one tile was merged each round
+  int score = 0;
+  int highScore;
+  boolean gameEnd;
+  boolean won;
 
   // populating the tile coordinates array with the x and y coordinates for the top left corner of each tile position
   int[][][] tileCoordinates;
@@ -90,14 +94,16 @@ class Gameplay {
 
 
             while ((canMove) && i != 0) { // i can't equal 0 because that is the top row, so no moves for those tiles are possible
-              if (playingTiles[i-1][j] == null) {
+              if (playingTiles[i-1][j] == null && !(playingTiles[i][j].alreadyMerged)) { // tiles can't move into a blank space once they've alreay been merged
                 playingTiles[i-1][j] = new Tile(playingTiles[i][j].value, tileCoordinates[i-1][j][0], tileCoordinates[i-1][j][1]);
                 playingTiles[i][j] = null;
                 i -= 1; // to account for if the tile can move up multiple spaces
                 moved = true;
-              } else if (playingTiles[i-1][j].value == playingTiles[i][j].value && i != 0 && !(playingTiles[i][j].alreadyMerged)) { // if adjacent tiles have the same value
+              } else if (playingTiles[i-1][j].value == playingTiles[i][j].value && i != 0 // if adjacent tiles have the same value
+                && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i-1][j].alreadyMerged)) { //if both tiles weren't already merged
                 playingTiles[i-1][j] = new Tile(playingTiles[i-1][j].value * 2, tileCoordinates[i-1][j][0], tileCoordinates[i-1][j][1]);
                 playingTiles[i-1][j].alreadyMerged = true;
+                score += playingTiles[i-1][j].value;
                 playingTiles[i][j] = null;
                 i -= 1;
                 moved = true;
@@ -119,14 +125,16 @@ class Gameplay {
             playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
 
             while ((canMove) && i != 3) { // i can't equal 3 because that is the bottom row, so no moves for those tiles are possible
-              if (playingTiles[i+1][j] == null) {
+              if (playingTiles[i+1][j] == null && !(playingTiles[i][j].alreadyMerged)) { // tiles can't move into a blank space once they've alreay been merged
                 playingTiles[i+1][j] = new Tile(playingTiles[i][j].value, tileCoordinates[i+1][j][0], tileCoordinates[i+1][j][1]);
                 playingTiles[i][j] = null;
                 i += 1; // to account for if the tile can move down multiple spaces
                 moved = true;
-              } else if (playingTiles[i+1][j].value == playingTiles[i][j].value && i != 3 && !(playingTiles[i][j].alreadyMerged)) { // if adjacent tiles have the same value
+              } else if (playingTiles[i+1][j].value == playingTiles[i][j].value && i != 3 
+                && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i+1][j].alreadyMerged)) { //if both tiles weren't already merged
                 playingTiles[i+1][j] = new Tile(playingTiles[i+1][j].value * 2, tileCoordinates[i+1][j][0], tileCoordinates[i+1][j][1]);
                 playingTiles[i+1][j].alreadyMerged = true; // keeps track if a tile was merged this round
+                score += playingTiles[i+1][j].value;
                 playingTiles[i][j] = null;
                 i += 1;
                 moved = true;
@@ -148,14 +156,16 @@ class Gameplay {
             playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
 
             while ((canMove) && j != 0) { // j can't equal 0 because that is the left most column, so no moves for those tiles are possible
-              if (playingTiles[i][j-1] == null) {
+              if (playingTiles[i][j-1] == null && !(playingTiles[i][j].alreadyMerged)) { // tiles can't move into a blank space once they've alreay been merged
                 playingTiles[i][j-1] = new Tile(playingTiles[i][j].value, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
                 playingTiles[i][j] = null;
                 j -= 1; // to account for if the tile can move left multiple spaces
                 moved = true;
-              } else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0 && !(playingTiles[i][j].alreadyMerged)) { // if adjacent tiles have the same value
+              } else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0 
+                && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i][j-1].alreadyMerged)) { //if both tiles weren't already merged
                 playingTiles[i][j-1] = new Tile(playingTiles[i][j-1].value * 2, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
                 playingTiles[i][j-1].alreadyMerged = true; // keeps track that this tile has been merged this turn
+                score += playingTiles[i][j-1].value;
                 playingTiles[i][j] = null;
                 j -= 1;
                 moved = true;
@@ -177,14 +187,16 @@ class Gameplay {
             playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
 
             while ((canMove) && j != 3) { // j can't equal 3 because that is the right most column, so no moves for those tiles are possible
-              if (playingTiles[i][j+1] == null) {
+              if (playingTiles[i][j+1] == null && !(playingTiles[i][j].alreadyMerged)) { // tiles can't move into a blank space once they've alreay been merged
                 playingTiles[i][j+1] = new Tile(playingTiles[i][j].value, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
                 playingTiles[i][j] = null;
                 j += 1; // to account for if the tile can move left multiple spaces
                 moved = true;
-              } else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3 && !(playingTiles[i][j].alreadyMerged)) { // if adjacent tiles have the same value
+              } else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3 
+                && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i][j+1].alreadyMerged)) { //if both tiles weren't already merged
                 playingTiles[i][j+1] = new Tile(playingTiles[i][j+1].value * 2, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
                 playingTiles[i][j+1].alreadyMerged = true;
+                score += playingTiles[i][j+1].value;
                 playingTiles[i][j] = null;
                 j += 1;
                 moved = true;
@@ -197,8 +209,112 @@ class Gameplay {
       }
       break;
     }
+    if (score > highScore)
+      highScore = score;
   }
 
-  void checkEnd() {
+  void shuffleTiles() {
+    Tile[][] tempTiles = new Tile[playingTiles.length][playingTiles[0].length]; // temporary array to store the current tiles
+
+    for (int i = 0; i < playingTiles.length; i++) {
+      for (int j = 0; j < playingTiles[0].length; j++) {
+
+        if (playingTiles[i][j] != null) {
+          tempTiles[i][j] = new Tile(playingTiles[i][j].value, 0, 0); // duplicating the array
+          playingTiles[i][j] = null; // erase the tile from the original array
+        }
+      }
+    }
+
+    for (int i = 0; i < playingTiles.length; i++) {
+      for (int j = 0; j < playingTiles[0].length; j++) {
+
+        if (tempTiles[i][j] != null) {
+
+          boolean tileMade = false;
+          do {
+            int g = (int) random(4);
+            int h = (int) random(4);
+
+            if (playingTiles[g][h] == null && tempTiles[i][j] != null) {
+
+              playingTiles[g][h] = new Tile(tempTiles[i][j].value, tileCoordinates[g][h][0], tileCoordinates[g][h][1]);
+              tileMade = true;
+            }
+          } while (!(tileMade));
+        }
+      }
+    }
+    moved = false; // shuffling isn't a real game move so a tile won't be added
+    score += 2000; // add shuffling bonus to score
   }
-} 
+
+  // checks if game is over
+  void checkEnd() {
+
+    int tileValue = 0; // temporary variable for checks
+    gameEnd = true; // default is the game ends, unless any of the checks stop it from ending
+
+    for (int i = 0; i < playingTiles.length; i++) {
+      for (int j = 0; j < playingTiles[0].length; j++) {
+        if (playingTiles[i][j] != null) {
+          tileValue = playingTiles[i][j].value;
+
+          if (tileValue == 2048) { // if a 2048 tile is present the game ends and the player won
+            gameEnd = true;
+            won = true;
+          } else {
+            if (i != 0 && playingTiles[i-1][j] != null) { // checking if an up move is possible
+              if (tileValue == playingTiles[i-1][j].value) {
+                gameEnd = false;
+              }
+            }
+
+            if (i != 3 && playingTiles[i+1][j] != null) { // checking if a down move is possible
+              if (tileValue == playingTiles[i+1][j].value) {
+                gameEnd = false;
+              }
+            }
+
+            if (j != 0 && playingTiles[i][j-1] != null) { // checking if a left move is possible
+              if (tileValue == playingTiles[i][j-1].value) {
+                gameEnd = false;
+              }
+            }
+            if (j != 3 && playingTiles[i][j+1] != null) { // checking if a right move is possible
+              if (tileValue == playingTiles[i][j+1].value) {
+                gameEnd = false;
+              }
+            }
+          }
+        } else { // shrten this 
+          if (!(won)) {
+            gameEnd = false;
+          }
+        }
+      }
+    }
+  }
+
+  void endScreen() {
+    String msg;
+
+    if (won)
+      msg = "you won! :)";
+    else 
+    msg = "you lost :(";
+
+    // drawing the square that displays the message
+    noStroke();
+    fill(255, 255, 255, 196.35);
+    rect(100, 117, 476, 476, 11);
+
+    // text
+    textAlign(CENTER, CENTER);
+    fill(navy);
+    textSize(60);
+    text(msg, width/2, 330);
+    textSize(23);
+    text("go home to play again (bottom left corner)", width/2, 400);
+  }
+}

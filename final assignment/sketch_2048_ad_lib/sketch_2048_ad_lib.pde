@@ -1,14 +1,14 @@
 boolean atHomeScreen = true;
-int score;
-int highScore = 0;
 ScoreBox currentScoreBox;
 ScoreBox highScoreBox;
 boolean easyMode, normalMode, hardMode;
 Gameplay board; 
+int highScore;
+int moves; // keeps track of how many moves have been made
 
 void setup() {
   size(675, 675);
-
+  board = new Gameplay(); // make a board to start
   // ADD SCORE INSTRUCTIONS
 }
 
@@ -18,9 +18,24 @@ void draw() {
   if (atHomeScreen && !(easyMode || normalMode || hardMode)) {
     homeScreen();
   } else if (easyMode || normalMode || hardMode) {
+
+    if (hardMode) {
+      hardModeText();
+      
+      if (moves % 15 == 0 && moves != 0 && !(board.gameEnd)) { // if they won/lost the game, don't shuffle
+        board.shuffleTiles();
+        moves = 0;
+      }
+    }
+
     gameSetup();
     board.plainBoard();
     board.showTiles();
+
+
+    if (board.gameEnd) {
+      board.endScreen();
+    }
   }
 
   helpIcon();
@@ -64,19 +79,14 @@ void mousePressed() {
       board.plainBoard();
       board.newTile();
       board.newTile();
+      atHomeScreen = false;
     }
-  }
-
-  if (easyMode || normalMode || hardMode) {
-    //if (keyCode == 38 ||
   }
 }
 
 void keyPressed() {
-  println(keyCode);
-  println(key);
 
-  if (easyMode || normalMode || hardMode) {
+  if ((easyMode || normalMode || hardMode) && !(atInstructions)) { // so players can't move around the tiles when the instructions are covering the board
     if (keyCode == 38 || keyCode == 87) {
       board.move("up");
     } else if (keyCode == 40 || keyCode == 83) {
@@ -87,7 +97,10 @@ void keyPressed() {
       board.move("right");
     }
 
-    if (board.moved) // if at least one tile moved/merged, add another to the board
-      board.newTile();
+    if (board.moved) {// if at least one tile moved/merged, add another to the board and check if the game ends
+      board.newTile();       
+      board.checkEnd();
+      moves++;
+    }
   }
 }

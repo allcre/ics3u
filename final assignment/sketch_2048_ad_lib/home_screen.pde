@@ -4,8 +4,12 @@ color navy;
 
 void homeScreen() {
   
+  highScore = board.highScore; // grab the high score from previous round
   board = new Gameplay(); // resets the game so a new board is made
-  score = 0; // reset score
+  board.highScore = highScore; // add the current high score to the function
+  board.gameEnd = false; // reset game end boolean
+  board.won = false;
+  moves = 0;
   
   textFont(loadFont("ProcessingSansPro-Semibold-48.vlw"));
   fill(255); // white

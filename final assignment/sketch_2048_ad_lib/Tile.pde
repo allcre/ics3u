@@ -51,7 +51,7 @@ class Tile {
     // number on the tile
     textAlign(CENTER, CENTER);
     fill(textColour);
-    textSize(30);
+    textSize(35);
     text(value, x + tileWidth/2, y + tileWidth/2);
   }
 }
