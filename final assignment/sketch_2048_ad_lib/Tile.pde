@@ -3,6 +3,7 @@ class Tile {
   int tileWidth = 101;
   color bgColour, textColour;
   int value;
+  boolean alreadyMerged;
   int x, y;
 
   Tile(int tempX, int tempY) {

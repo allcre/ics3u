@@ -79,16 +79,15 @@ void keyPressed() {
   if (easyMode || normalMode || hardMode) {
     if (keyCode == 38 || keyCode == 87) {
       board.move("up");
-      board.newTile();
     } else if (keyCode == 40 || keyCode == 83) {
       board.move("down");
-      board.newTile();
     } else if (keyCode == 37 || keyCode == 65) {
       board.move("left");
-      board.newTile();
     } else if (keyCode == 39 || keyCode == 68) {
       board.move("right");
-      board.newTile();
     }
+
+    if (board.moved) // if at least one tile moved/merged, add another to the board
+      board.newTile();
   }
 }

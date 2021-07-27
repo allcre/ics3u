@@ -12,6 +12,7 @@ class Gameplay {
   int i = 0;
   int j = 0;
   String direction; // direction of move
+  boolean moved; // tracks if at least one tile was merged each round
 
   // populating the tile coordinates array with the x and y coordinates for the top left corner of each tile position
   int[][][] tileCoordinates;
@@ -76,6 +77,7 @@ class Gameplay {
 
   void move(String tempDirection) {
     direction = tempDirection; // this might be unneccessary
+    moved = false; // reset moved boolean
 
     switch (direction) {
     case "up":
@@ -84,16 +86,21 @@ class Gameplay {
 
           if (playingTiles[i][j] != null) {
             boolean canMove = true;
+            playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
+
 
             while ((canMove) && i != 0) { // i can't equal 0 because that is the top row, so no moves for those tiles are possible
               if (playingTiles[i-1][j] == null) {
                 playingTiles[i-1][j] = new Tile(playingTiles[i][j].value, tileCoordinates[i-1][j][0], tileCoordinates[i-1][j][1]);
                 playingTiles[i][j] = null;
                 i -= 1; // to account for if the tile can move up multiple spaces
-              } else if (playingTiles[i-1][j].value == playingTiles[i][j].value && i != 0) { // if adjacent tiles have the same value
+                moved = true;
+              } else if (playingTiles[i-1][j].value == playingTiles[i][j].value && i != 0 && !(playingTiles[i][j].alreadyMerged)) { // if adjacent tiles have the same value
                 playingTiles[i-1][j] = new Tile(playingTiles[i-1][j].value * 2, tileCoordinates[i-1][j][0], tileCoordinates[i-1][j][1]);
+                playingTiles[i-1][j].alreadyMerged = true;
                 playingTiles[i][j] = null;
                 i -= 1;
+                moved = true;
               } else {
                 canMove = false;
               }
@@ -109,16 +116,20 @@ class Gameplay {
 
           if (playingTiles[i][j] != null) {
             boolean canMove = true;
+            playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
 
             while ((canMove) && i != 3) { // i can't equal 3 because that is the bottom row, so no moves for those tiles are possible
               if (playingTiles[i+1][j] == null) {
                 playingTiles[i+1][j] = new Tile(playingTiles[i][j].value, tileCoordinates[i+1][j][0], tileCoordinates[i+1][j][1]);
                 playingTiles[i][j] = null;
                 i += 1; // to account for if the tile can move down multiple spaces
-              } else if (playingTiles[i+1][j].value == playingTiles[i][j].value && i != 3) { // if adjacent tiles have the same value
+                moved = true;
+              } else if (playingTiles[i+1][j].value == playingTiles[i][j].value && i != 3 && !(playingTiles[i][j].alreadyMerged)) { // if adjacent tiles have the same value
                 playingTiles[i+1][j] = new Tile(playingTiles[i+1][j].value * 2, tileCoordinates[i+1][j][0], tileCoordinates[i+1][j][1]);
+                playingTiles[i+1][j].alreadyMerged = true; // keeps track if a tile was merged this round
                 playingTiles[i][j] = null;
                 i += 1;
+                moved = true;
               } else {
                 canMove = false;
               }
@@ -134,16 +145,20 @@ class Gameplay {
 
           if (playingTiles[i][j] != null) {
             boolean canMove = true;
+            playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
 
             while ((canMove) && j != 0) { // j can't equal 0 because that is the left most column, so no moves for those tiles are possible
               if (playingTiles[i][j-1] == null) {
                 playingTiles[i][j-1] = new Tile(playingTiles[i][j].value, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
                 playingTiles[i][j] = null;
                 j -= 1; // to account for if the tile can move left multiple spaces
-              } else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0) { // if adjacent tiles have the same value
+                moved = true;
+              } else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0 && !(playingTiles[i][j].alreadyMerged)) { // if adjacent tiles have the same value
                 playingTiles[i][j-1] = new Tile(playingTiles[i][j-1].value * 2, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
+                playingTiles[i][j-1].alreadyMerged = true; // keeps track that this tile has been merged this turn
                 playingTiles[i][j] = null;
                 j -= 1;
+                moved = true;
               } else {
                 canMove = false;
               }
@@ -159,16 +174,20 @@ class Gameplay {
 
           if (playingTiles[i][j] != null) {
             boolean canMove = true;
+            playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
 
             while ((canMove) && j != 3) { // j can't equal 3 because that is the right most column, so no moves for those tiles are possible
               if (playingTiles[i][j+1] == null) {
                 playingTiles[i][j+1] = new Tile(playingTiles[i][j].value, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
                 playingTiles[i][j] = null;
                 j += 1; // to account for if the tile can move left multiple spaces
-              } else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3) { // if adjacent tiles have the same value
+                moved = true;
+              } else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3 && !(playingTiles[i][j].alreadyMerged)) { // if adjacent tiles have the same value
                 playingTiles[i][j+1] = new Tile(playingTiles[i][j+1].value * 2, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
+                playingTiles[i][j+1].alreadyMerged = true;
                 playingTiles[i][j] = null;
                 j += 1;
+                moved = true;
               } else {
                 canMove = false;
               }
@@ -178,5 +197,8 @@ class Gameplay {
       }
       break;
     }
+  }
+
+  void checkEnd() {
   }
 } 
