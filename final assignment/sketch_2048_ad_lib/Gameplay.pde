@@ -18,7 +18,7 @@ class Gameplay {
   boolean gameEnd;
   boolean won;
 
-  // populating the tile coordinates array with the x and y coordinates for the top left corner of each tile position
+  // an array with the x and y coordinates for the top left corner of each tile position
   int[][][] tileCoordinates;
 
 
@@ -248,6 +248,69 @@ class Gameplay {
     moved = false; // shuffling isn't a real game move so a tile won't be added
     score += 2000; // add shuffling bonus to score
   }
+
+
+
+  // wiggles all the tiles to indicate that they can be rearranged
+  void jiggleTiles() {
+
+    for (int i = 0; i < playingTiles.length; i++) {
+      for (int j = 0; j < playingTiles[0].length; j++) {
+        if (playingTiles[i][j] != null) {
+
+          playingTiles[i][j].wiggle();
+        }
+      }
+    }
+  } 
+
+
+  void moveTiles(int iTile, int jTile) {
+
+    for (int i = 0; i < playingTiles.length; i++) {
+      for (int j = 0; j < playingTiles[0].length; j++) {
+        if (playingTiles[i][j] != null) {
+
+          playingTiles[i][j] = new Tile(playingTiles[i][j].value, mouseX - 50.5, mouseY - 50.5);
+        }
+      }
+    }
+  }
+
+  void reassignTiles() {
+  }
+
+  // returns the indexes of the position that was clicked 
+  int getI(float x) {
+
+    for (int i = 0; i < playingTiles.length; i++) {
+      for (int j = 0; j < playingTiles[0].length; j++) {
+
+        if ((tileCoordinates[i][j][0] + 107.5) >= x && x >= tileCoordinates[i][j][1]) { // if the x value is within the range of a tile spot from the coordinates array, 107.5 accounts fro gaps between the tiles
+          return i;
+        } 
+      }
+    }
+    
+    return 24; // stops an error from popping up
+  }
+
+  int getJ(float y) {
+    
+    for (int i = 0; i < playingTiles.length; i++) {
+      for (int j = 0; j < playingTiles[0].length; j++) {
+
+        if ( y < tileCoordinates[i][j][1] + 101) { // if the y value is within the range of a tile spot from the coordinates array
+          return j;
+        } 
+      }
+    }
+    
+    return 24; // stops an error from popping up
+  }
+
+
+
 
   // checks if game is over
   void checkEnd() {

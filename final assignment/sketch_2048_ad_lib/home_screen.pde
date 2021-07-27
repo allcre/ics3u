@@ -10,6 +10,8 @@ void homeScreen() {
   board.gameEnd = false; // reset game end boolean
   board.won = false;
   moves = 0;
+  rearranging = false;
+  numRearrange = 0;
   
   textFont(loadFont("ProcessingSansPro-Semibold-48.vlw"));
   fill(255); // white

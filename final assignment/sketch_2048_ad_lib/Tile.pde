@@ -4,16 +4,16 @@ class Tile {
   color bgColour, textColour;
   int value;
   boolean alreadyMerged;
-  int x, y;
+  float x, y;
 
-  Tile(int tempX, int tempY) {
+  Tile(float tempX, float tempY) {
     bgColour = color(#006796);
     textColour = bgColour;
     x = tempX;
     y = tempY;
   }
 
-  Tile (int tempValue, int tempX, int tempY) {
+  Tile (int tempValue, float tempX, float tempY) {
     value = tempValue;
     // tile colours based on value
     switch (value) {
@@ -53,5 +53,28 @@ class Tile {
     fill(textColour);
     textSize(35);
     text(value, x + tileWidth/2, y + tileWidth/2);
+  }
+  
+  // draws a tile that is wiggling
+  void wiggle() {
+    pushMatrix();
+    translate(x + 50.5, y + 50.5);
+    
+    float direction = random(1);
+    if (direction < 0.5)
+      rotate(radians(-5));
+      else
+      rotate(radians(5));
+    
+    fill(bgColour);
+    noStroke();
+    rect(- 50.5, -50.5, tileWidth, tileWidth, 5);
+  
+    // number on the tile
+    textAlign(CENTER, CENTER);
+    fill(textColour);
+    textSize(35);
+    text(value, 0, 0);
+    popMatrix();
   }
 }

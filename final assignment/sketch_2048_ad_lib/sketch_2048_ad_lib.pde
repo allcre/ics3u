@@ -5,6 +5,8 @@ boolean easyMode, normalMode, hardMode;
 Gameplay board; 
 int highScore;
 int moves; // keeps track of how many moves have been made
+boolean rearranging; // if the program is in the rearranging mode or not
+int numRearrange; // keeps track of how many times the board has been manually rearranged;
 
 void setup() {
   size(675, 675);
@@ -21,7 +23,7 @@ void draw() {
 
     if (hardMode) {
       hardModeText();
-      
+
       if (moves % 15 == 0 && moves != 0 && !(board.gameEnd)) { // if they won/lost the game, don't shuffle
         board.shuffleTiles();
         moves = 0;
@@ -30,8 +32,20 @@ void draw() {
 
     gameSetup();
     board.plainBoard();
-    board.showTiles();
 
+
+    if (easyMode) {
+      easyModeText();
+    } 
+
+    // this block uses the normal display function if not in rearranging mode, otherwise the blocks are jiggling
+    if (rearranging) {
+      board.jiggleTiles();
+      //board.moveTiles();
+      delay(60);
+    } else {
+      board.showTiles();
+    }
 
     if (board.gameEnd) {
       board.endScreen();
@@ -82,6 +96,20 @@ void mousePressed() {
       atHomeScreen = false;
     }
   }
+
+  // starts the rearrange mode
+  if (easyMode && !(atInstructions)) {
+    if (mouseX > 254 && mouseX < 422 && mouseY > 611 && mouseY < 641 && numRearrange < 3) {
+      if (rearranging) { // stops/starts the rearrange mode
+        rearranging = false;
+        numRearrange += 1;
+      } else
+        rearranging = true;
+    }
+  }
+
+  // gets the indexes of the tile that is clicked 
+  // some function
 }
 
 void keyPressed() {
@@ -103,4 +131,16 @@ void keyPressed() {
       moves++;
     }
   }
+}
+
+
+
+
+
+void mouseDragged() {
+  
+  // if mouse x and y are on the board
+  println(board.getI(mouseX));
+  println(board.getJ(mouseY));
+  
 }
