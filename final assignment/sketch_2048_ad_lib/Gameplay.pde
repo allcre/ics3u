@@ -79,19 +79,103 @@ class Gameplay {
 
     switch (direction) {
     case "up":
+      for (int i = 0; i < playingTiles.length; i++) { // traverse tiles from top to bottom
+        for (int j = 0; j < playingTiles[0].length; j++) {
 
+          if (playingTiles[i][j] != null) {
+            boolean canMove = true;
+
+            while ((canMove) && i != 0) { // i can't equal 0 because that is the top row, so no moves for those tiles are possible
+              if (playingTiles[i-1][j] == null) {
+                playingTiles[i-1][j] = new Tile(playingTiles[i][j].value, tileCoordinates[i-1][j][0], tileCoordinates[i-1][j][1]);
+                playingTiles[i][j] = null;
+                i -= 1; // to account for if the tile can move up multiple spaces
+              } else if (playingTiles[i-1][j].value == playingTiles[i][j].value && i != 0) { // if adjacent tiles have the same value
+                playingTiles[i-1][j] = new Tile(playingTiles[i-1][j].value * 2, tileCoordinates[i-1][j][0], tileCoordinates[i-1][j][1]);
+                playingTiles[i][j] = null;
+                i -= 1;
+              } else {
+                canMove = false;
+              }
+            }
+          }
+        }
+      }
       break;
 
     case "down":
+      for (int i = 3; i >= 0; i--) { // traverse tiles from bottom to top
+        for (int j = 0; j < playingTiles[0].length; j++) {
 
+          if (playingTiles[i][j] != null) {
+            boolean canMove = true;
+
+            while ((canMove) && i != 3) { // i can't equal 3 because that is the bottom row, so no moves for those tiles are possible
+              if (playingTiles[i+1][j] == null) {
+                playingTiles[i+1][j] = new Tile(playingTiles[i][j].value, tileCoordinates[i+1][j][0], tileCoordinates[i+1][j][1]);
+                playingTiles[i][j] = null;
+                i += 1; // to account for if the tile can move down multiple spaces
+              } else if (playingTiles[i+1][j].value == playingTiles[i][j].value && i != 3) { // if adjacent tiles have the same value
+                playingTiles[i+1][j] = new Tile(playingTiles[i+1][j].value * 2, tileCoordinates[i+1][j][0], tileCoordinates[i+1][j][1]);
+                playingTiles[i][j] = null;
+                i += 1;
+              } else {
+                canMove = false;
+              }
+            }
+          }
+        }
+      }
       break;
 
     case "left":
+      for (int j = 0; j < playingTiles[0].length; j++) { // traverse tiles from left to right
+        for (int i = 0; i < playingTiles.length; i++) {  
 
+          if (playingTiles[i][j] != null) {
+            boolean canMove = true;
+
+            while ((canMove) && j != 0) { // j can't equal 0 because that is the left most column, so no moves for those tiles are possible
+              if (playingTiles[i][j-1] == null) {
+                playingTiles[i][j-1] = new Tile(playingTiles[i][j].value, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
+                playingTiles[i][j] = null;
+                j -= 1; // to account for if the tile can move left multiple spaces
+              } else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0) { // if adjacent tiles have the same value
+                playingTiles[i][j-1] = new Tile(playingTiles[i][j-1].value * 2, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
+                playingTiles[i][j] = null;
+                j -= 1;
+              } else {
+                canMove = false;
+              }
+            }
+          }
+        }
+      }
       break;
 
     case "right": // could switch to default maybe
+      for (int j = 3; j >= 0; j--) { // traverse tiles from right to left
+        for (int i = 0; i < playingTiles.length; i++) {  
 
+          if (playingTiles[i][j] != null) {
+            boolean canMove = true;
+
+            while ((canMove) && j != 3) { // j can't equal 3 because that is the right most column, so no moves for those tiles are possible
+              if (playingTiles[i][j+1] == null) {
+                playingTiles[i][j+1] = new Tile(playingTiles[i][j].value, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
+                playingTiles[i][j] = null;
+                j += 1; // to account for if the tile can move left multiple spaces
+              } else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3) { // if adjacent tiles have the same value
+                playingTiles[i][j+1] = new Tile(playingTiles[i][j+1].value * 2, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
+                playingTiles[i][j] = null;
+                j += 1;
+              } else {
+                canMove = false;
+              }
+            }
+          }
+        }
+      }
       break;
     }
   }

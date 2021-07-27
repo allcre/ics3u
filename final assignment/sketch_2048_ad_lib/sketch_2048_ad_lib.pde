@@ -1,5 +1,5 @@
 boolean atHomeScreen = true;
-int score = 0;
+int score;
 int highScore = 0;
 ScoreBox currentScoreBox;
 ScoreBox highScoreBox;
@@ -8,7 +8,7 @@ Gameplay board;
 
 void setup() {
   size(675, 675);
-  
+
   // ADD SCORE INSTRUCTIONS
 }
 
@@ -58,11 +58,36 @@ void mousePressed() {
     } else if (mouseY > (hardY) && mouseY < (hardY + modeHeight)) {
       hardMode = true;
     }
-    
+
     // starting board with 2 tiles on it
     if (easyMode || normalMode || hardMode) {
       board.plainBoard();
       board.newTile();
+      board.newTile();
+    }
+  }
+
+  if (easyMode || normalMode || hardMode) {
+    //if (keyCode == 38 ||
+  }
+}
+
+void keyPressed() {
+  println(keyCode);
+  println(key);
+
+  if (easyMode || normalMode || hardMode) {
+    if (keyCode == 38 || keyCode == 87) {
+      board.move("up");
+      board.newTile();
+    } else if (keyCode == 40 || keyCode == 83) {
+      board.move("down");
+      board.newTile();
+    } else if (keyCode == 37 || keyCode == 65) {
+      board.move("left");
+      board.newTile();
+    } else if (keyCode == 39 || keyCode == 68) {
+      board.move("right");
       board.newTile();
     }
   }
