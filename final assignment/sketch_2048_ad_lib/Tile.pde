@@ -14,10 +14,33 @@ class Tile {
 
   Tile (int tempValue, int tempX, int tempY) {
     value = tempValue;
-     // FILL OUT COLOURS DEPENDING ON VALUE
-     x = tempX;
-     y = tempY;
-     textColour = color(255);
+    // tile colours based on value
+    switch (value) {
+    case 2:
+      bgColour = color(#F2E4BB); // yellow
+      break;
+    case 4:
+      bgColour = color(#D9BCA3); // beige
+      break;
+    case 8:
+      bgColour = color(#BF8892); // rose pink
+      break;
+    case 16:
+      bgColour = color(#532740); // fuscia
+      break;
+    case 32:
+      bgColour = color(#734C48); // brown
+      break;
+    case 64:
+      bgColour = color(#126369); // deep green
+      break;
+    default:
+      bgColour = color(#759FBC); // light blue
+    }
+
+    x = tempX;
+    y = tempY;
+    textColour = color(255);
   }
 
   void display() {
