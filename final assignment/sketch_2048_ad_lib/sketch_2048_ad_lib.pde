@@ -1,3 +1,9 @@
+boolean atHomeScreen = true;
+int score = 0;
+int highScore = 0;
+ScoreBox currentScoreBox;
+ScoreBox highScoreBox;
+
 void setup() {
   size(675, 675);
 }
@@ -5,8 +11,11 @@ void setup() {
 void draw() {
   background(#91ADC2); // pale blue background
 
-  if (atHomeScreen) {
+  if (atHomeScreen && !(easyMode || normalMode || hardMode)) {
     homeScreen();
+  } 
+  else if (easyMode || normalMode || hardMode) {
+    gameSetup();
   }
 
   helpIcon();
@@ -14,6 +23,7 @@ void draw() {
 
   if (atInstructions)
     instructions();
+  
 }
 
 void mousePressed() {
@@ -26,6 +36,25 @@ void mousePressed() {
       atInstructions = true;
   }
   
-  if (mouseX > 8 && mouseX < 51 && mouseY < (height - 9) && mouseY > (height - 49))
+  // shows home screen if home button is clicked
+  if (mouseX > 8 && mouseX < 51 && mouseY < (height - 9) && mouseY > (height - 49)) {
     atHomeScreen = true;
+    easyMode = false;
+    normalMode = false;
+    hardMode = false;
+  }
+
+  // actions to start a game when a mode button is clicked 
+ 
+  if ((atHomeScreen) && mouseX > modeX && mouseX < (modeX + modeWidth)) {
+    if (mouseY > easyY && mouseY < (easyY + modeHeight)) {
+      easyMode = true;
+    }
+    else if (mouseY > (normalY) && mouseY < (normalY + modeHeight)) {
+      normalMode = true;
+    }
+    else if (mouseY > (hardY) && mouseY < (hardY + modeHeight)) {
+      hardMode = true;
+    }
+  }
 }

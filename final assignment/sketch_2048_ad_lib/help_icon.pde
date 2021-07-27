@@ -12,5 +12,6 @@ void helpIcon() {
   // question mark
   fill(255);
   textSize(30);
+  textAlign(LEFT, TOP);
   text("?", width - 35, height - 39);
 }
