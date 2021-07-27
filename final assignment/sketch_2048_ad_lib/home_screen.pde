@@ -4,6 +4,8 @@ color navy;
 
 void homeScreen() {
   
+  board = new Gameplay(); // resets the game so a new board is made
+  
   textFont(loadFont("ProcessingSansPro-Semibold-48.vlw"));
   fill(255); // white
   textSize(70);

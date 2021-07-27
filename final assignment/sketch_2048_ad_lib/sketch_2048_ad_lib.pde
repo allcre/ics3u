@@ -3,9 +3,13 @@ int score = 0;
 int highScore = 0;
 ScoreBox currentScoreBox;
 ScoreBox highScoreBox;
+boolean easyMode, normalMode, hardMode;
+Gameplay board; 
 
 void setup() {
   size(675, 675);
+  
+  // ADD SCORE INSTRUCTIONS
 }
 
 void draw() {
@@ -13,9 +17,10 @@ void draw() {
 
   if (atHomeScreen && !(easyMode || normalMode || hardMode)) {
     homeScreen();
-  } 
-  else if (easyMode || normalMode || hardMode) {
+  } else if (easyMode || normalMode || hardMode) {
     gameSetup();
+    board.plainBoard();
+    board.showTiles();
   }
 
   helpIcon();
@@ -23,11 +28,10 @@ void draw() {
 
   if (atInstructions)
     instructions();
-  
 }
 
 void mousePressed() {
-  
+
   // opens or closes the instructions bubble when the help icon is clicked
   if (dist(mouseX, mouseY, helpCenter, helpCenter) < helpDiameter/2 + 2.5) { // +2.5 accounts for the stroke width
     if (atInstructions == true)
@@ -35,7 +39,7 @@ void mousePressed() {
     else
       atInstructions = true;
   }
-  
+
   // shows home screen if home button is clicked
   if (mouseX > 8 && mouseX < 51 && mouseY < (height - 9) && mouseY > (height - 49)) {
     atHomeScreen = true;
@@ -45,16 +49,21 @@ void mousePressed() {
   }
 
   // actions to start a game when a mode button is clicked 
- 
+
   if ((atHomeScreen) && mouseX > modeX && mouseX < (modeX + modeWidth)) {
     if (mouseY > easyY && mouseY < (easyY + modeHeight)) {
       easyMode = true;
-    }
-    else if (mouseY > (normalY) && mouseY < (normalY + modeHeight)) {
+    } else if (mouseY > (normalY) && mouseY < (normalY + modeHeight)) {
       normalMode = true;
-    }
-    else if (mouseY > (hardY) && mouseY < (hardY + modeHeight)) {
+    } else if (mouseY > (hardY) && mouseY < (hardY + modeHeight)) {
       hardMode = true;
+    }
+    
+    // starting board with 2 tiles on it
+    if (easyMode || normalMode || hardMode) {
+      board.plainBoard();
+      board.newTile();
+      board.newTile();
     }
   }
 }
