@@ -60,7 +60,7 @@ void draw() {
     // basic game setup that draws the playing board and other static features for every mode
     gameSetup();
     board.plainBoard();
-  
+
     if (easyMode) // if playing in easy mode, display the appropriate easy mode text
       easyModeText();
 
@@ -90,7 +90,6 @@ void draw() {
   // if the help icon was clicked, show instructions
   if (atInstructions)
     instructions();
-    
 }
 
 // method that runs when the mouse is pressed
