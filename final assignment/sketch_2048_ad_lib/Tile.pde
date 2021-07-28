@@ -54,12 +54,13 @@ class Tile {
   // draw a tile
   void display() {
     fill(bgColour); // colour
+    noStroke();
     rect(x, y, tileWidth, tileWidth, 5);
 
     // centered number on the tile
     textAlign(CENTER, CENTER);
     fill(textColour);
-    textSize(35);
+    textSize(43);
     text(value, x + tileWidth/2, y + tileWidth/2);
   }
 
@@ -72,7 +73,7 @@ class Tile {
     float direction = random(1);
     if (direction < 0.5)
       rotate(radians(-5));
-      else
+    else
       rotate(radians(5));
 
     fill(bgColour); // colour
@@ -82,7 +83,7 @@ class Tile {
     // number on the tile
     textAlign(CENTER, CENTER);
     fill(textColour);
-    textSize(35);
+    textSize(43);
     text(value, 0, 0); // centered text
     popMatrix(); // put the plane back
   }
