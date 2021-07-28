@@ -276,124 +276,136 @@ class Gameplay {
       highScore = score;
   }
 
+  // shuffles all tiles on the board
   void shuffleTiles() {
     Tile[][] tempTiles = new Tile[playingTiles.length][playingTiles[0].length]; // temporary array to store the current tiles
 
+    // for each spot on the board
     for (int i = 0; i < playingTiles.length; i++) {
       for (int j = 0; j < playingTiles[0].length; j++) {
 
+        // if there is a tile
         if (playingTiles[i][j] != null) {
-          tempTiles[i][j] = new Tile(playingTiles[i][j].value, 0, 0); // duplicating the array
-          playingTiles[i][j] = null; // erase the tile from the original array
+          // duplicate the tile into the temporary array and erase it from the board
+          tempTiles[i][j] = new Tile(playingTiles[i][j].value, 0, 0);
+          playingTiles[i][j] = null;
         }
       }
     }
 
+    // for each spot in the temporary array
     for (int i = 0; i < playingTiles.length; i++) {
       for (int j = 0; j < playingTiles[0].length; j++) {
 
-        if (tempTiles[i][j] != null) {
+        if (tempTiles[i][j] != null) { // if there is a tile
 
-          boolean tileMade = false;
+          boolean tileMade = false; // tracks if a tile has been made
+
+          // until a tile has been made
           do {
+            // randomly generate indexes
             int g = (int) random(4);
             int h = (int) random(4);
 
-            if (playingTiles[g][h] == null && tempTiles[i][j] != null) {
-
+            // if there is an empty spot on the board at the randomly generated spot
+            if (playingTiles[g][h] == null) {
+              // duplicate the tile from the temp array there
               playingTiles[g][h] = new Tile(tempTiles[i][j].value, tileCoordinates[g][h][0], tileCoordinates[g][h][1]);
-              tileMade = true;
+              tileMade = true; // a tile has been made
             }
           } while (!(tileMade));
         }
       }
     }
-    moved = false; // shuffling isn't a real game move so a tile won't be added
+    moved = false; // shuffling doesn't count as a valid move
     score += 500; // add shuffling bonus to score
   }
-
-
 
   // wiggles all the tiles to indicate that they can be rearranged
   void jiggleTiles() {
 
+    // for each playing tile
     for (int i = 0; i < playingTiles.length; i++) {
       for (int j = 0; j < playingTiles[0].length; j++) {
-        if (playingTiles[i][j] != null) {
-
-          playingTiles[i][j].wiggle();
-        }
+        if (playingTiles[i][j] != null)
+          playingTiles[i][j].wiggle(); // run the wiggle method
       }
     }
   }
 
+  // returns the column index of an x-coordinate
+  int getJ(float x) {
+    // for each column
+    for (int j = 0; j < playingTiles[0].length; j++) {
+      // if x is inbetween the x-coordinates of the left and right side of the column
+      if (x >= (tileCoordinates[0][j][0] - 6.5) && x <= (tileCoordinates[0][j][0] + 107.5)) // 6.5 accounts for gaps between tiles
+        return j; // return the column index
+    }
 
+    // if not within a column, return 24 (random number)
+    return 24;
+  }
+
+  // returns the row index of a y-coordinate
+  int getI(float y) {
+    // for each row
+    for (int i = 0; i < playingTiles.length; i++) {
+      // if y is inbetween the y-coordinates of the top and bottom of each row
+      if (y >= (tileCoordinates[i][0][1] - 6.5) && y <= (tileCoordinates[i][0][1] + 107.5)) // 6.5 accounts for gaps between tiles
+        return i; // return the row index
+    }
+
+    // if not within a row, return 24
+    return 24;
+  }
+
+  // method to manually drag and move a tile
   void moveTiles() {
-    if (playingTiles[originalI][originalJ] != null) {
+    if (playingTiles[originalI][originalJ] != null) { // if a tile was picked up
+      // change the tiles x and y values to the players mouse coordinates minus half of the tile width (so the cursor is centered in the tile)
       playingTiles[originalI][originalJ].x = mouseX - 50.5;
       playingTiles[originalI][originalJ].y = mouseY - 50.5;
     }
   }
 
+  // reassigns the index values of a playing tile after it's been moved
   void reassignTiles() {
 
     if (playingTiles[originalI][originalJ] != null) { // if the player wasn't dragging an empty area
 
-      if (newI == 24 || newJ == 24 || playingTiles[newI][newJ] != null) { // if the position is not on the playing board, or the spot is taken, redraw the tile in it's original spot
+      // if the new position is not on the playing board, or the spot is taken, change x and y of the tile to its original spot
+      if (newI == 24 || newJ == 24 || playingTiles[newI][newJ] != null) {
         playingTiles[originalI][originalJ].x = tileCoordinates[originalI][originalJ][0];
         playingTiles[originalI][originalJ].y = tileCoordinates[originalI][originalJ][1];
-      } else {
-        playingTiles[newI][newJ] = new Tile(playingTiles[originalI][originalJ].value, tileCoordinates[newI][newJ][0], tileCoordinates[newI][newJ][1]); // make a new tile in the new spot
+      }
+
+      // otherwise make a new tile in the new spot
+      else {
+        playingTiles[newI][newJ] = new Tile(playingTiles[originalI][originalJ].value, tileCoordinates[newI][newJ][0], tileCoordinates[newI][newJ][1]);
         playingTiles[originalI][originalJ] = null; // erase the old tile
         score -= 250; // point penalty for every tile that is moved
       }
     }
   }
 
-  // returns the indexes of the position that was clicked
-  int getJ(float x) {
-
-    for (int j = 0; j < playingTiles[0].length; j++) {
-
-      if (x >= (tileCoordinates[0][j][0] - 6.5) && x <= (tileCoordinates[0][j][0] + 107.5)) {
-        return j;
-      }
-    }
-
-    return 24; // stops an error from popping up
-  }
-
-  int getI(float y) {
-
-    for (int i = 0; i < playingTiles.length; i++) {
-
-      if (y >= (tileCoordinates[i][0][1] - 6.5) && y <= (tileCoordinates[i][0][1] + 107.5)) {
-        return i;
-      }
-    }
-
-    return 24; // stops an error from popping up
-  }
-
-
-
-
-  // checks if game is over
+  // checks if the game is over
   void checkEnd() {
 
     int tileValue = 0; // temporary variable for checks
     gameEnd = true; // default is the game ends, unless any of the checks stop it from ending
 
+    // for each spot on the board
     for (int i = 0; i < playingTiles.length; i++) {
       for (int j = 0; j < playingTiles[0].length; j++) {
-        if (playingTiles[i][j] != null) {
-          tileValue = playingTiles[i][j].value;
+        if (playingTiles[i][j] != null) { // if there is a tile
+          tileValue = playingTiles[i][j].value; // for readability
 
           if (tileValue == 2048) { // if a 2048 tile is present the game ends and the player won
             gameEnd = true;
             won = true;
             score += 50000; // 50k point bonus for making a 2048 tile
-          } else {
+          } else { // otherwise check if any moves can be made
+
             if (i != 0 && playingTiles[i-1][j] != null) { // checking if an up move is possible
               if (tileValue == playingTiles[i-1][j].value) {
                 gameEnd = false;
@@ -417,18 +429,20 @@ class Gameplay {
               }
             }
           }
-        } else { // shrten this
-          if (!(won)) {
-            gameEnd = false;
-          }
         }
+
+        // if there is an empty spot and the game hasn't been won, the game doesn't end
+        else if (!(won))
+          gameEnd = false;
       }
     }
   }
 
+  // displays the won/lost screen
   void endScreen() {
     String msg;
 
+    // assign msg depending on if the player won or lost
     if (won)
       msg = "you won! :)";
     else
