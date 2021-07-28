@@ -2,18 +2,17 @@ boolean atHomeScreen = true;
 ScoreBox currentScoreBox;
 ScoreBox highScoreBox;
 boolean easyMode, normalMode, hardMode;
-Gameplay board; 
+Gameplay board;
 int highScore;
 int moves; // keeps track of how many moves have been made
 boolean rearranging; // if the program is in the rearranging mode or not
 int numRearrange; // keeps track of how many times the board has been manually rearranged;
 int originalI, originalJ, newI, newJ; // used for rearranging tiles
-boolean moving; // used for keeping track if a tile is being moved manually 
+boolean moving; // used for keeping track if a tile is being moved manually
 
 void setup() {
   size(675, 675);
   board = new Gameplay(); // make a board to start
-  // ADD SCORE INSTRUCTIONS
 }
 
 void draw() {
@@ -38,17 +37,17 @@ void draw() {
 
     if (easyMode) {
       easyModeText();
-    } 
+    }
 
     // this block uses the normal display function if not in rearranging mode, otherwise the blocks are jiggling
     if (rearranging) {
       board.jiggleTiles();
       delay(60);
-      
+
       if (moving) {
         board.moveTiles();
       }
-      
+
     } else {
       board.showTiles();
     }
@@ -83,7 +82,7 @@ void mousePressed() {
     hardMode = false;
   }
 
-  // actions to start a game when a mode button is clicked 
+  // actions to start a game when a mode button is clicked
 
   if ((atHomeScreen) && mouseX > modeX && mouseX < (modeX + modeWidth)) {
     if (mouseY > easyY && mouseY < (easyY + modeHeight)) {
@@ -103,10 +102,10 @@ void mousePressed() {
     }
   }
 
-  
 
-  // gets the indexes of the tile that is clicked 
-  
+
+  // gets the indexes of the tile that is clicked
+
   if (easyMode && !(atInstructions) && rearranging && (!(moving))) {
     // if the mouse is on the board
     if (mouseX > 116 && mouseX < (width - 116) && mouseY > 117 && mouseY < (height - 82)) {
@@ -117,12 +116,12 @@ void mousePressed() {
       moving = true;
     }
   }
-  
+
   // some function
 }
 
 void mouseReleased() {
-  
+
   // starts the rearrange mode (has to be at release or else the button is treated like a tile)
   if (easyMode && !(atInstructions)) {
     if (mouseX > 254 && mouseX < 422 && mouseY > 611 && mouseY < 641 && numRearrange < 3) {
@@ -133,15 +132,15 @@ void mouseReleased() {
         rearranging = true;
     }
   }
-  
+
   if (rearranging && moving) {
-    
+
     newI = board.getI(mouseY);
-    newJ = board.getJ(mouseX); 
+    newJ = board.getJ(mouseX);
     board.reassignTiles();
     moving = false;
   }
-  
+
 }
 
 void keyPressed() {
@@ -158,7 +157,7 @@ void keyPressed() {
     }
 
     if (board.moved) {// if at least one tile moved/merged, add another to the board and check if the game ends
-      board.newTile();       
+      board.newTile();
       board.checkEnd();
       moves++;
     }
@@ -170,7 +169,7 @@ void keyPressed() {
 
 
 void mouseDragged() {
-  
 
-  
+
+
 }
