@@ -47,7 +47,6 @@ void draw() {
       if (moving) {
         board.moveTiles();
       }
-
     } else {
       board.showTiles();
     }
@@ -123,7 +122,7 @@ void mousePressed() {
 void mouseReleased() {
 
   // starts the rearrange mode (has to be at release or else the button is treated like a tile)
-  if (easyMode && !(atInstructions)) {
+  if (easyMode && !(atInstructions) && !(board.gameEnd)) { // if the game isn't over and instructions aren't open
     if (mouseX > 254 && mouseX < 422 && mouseY > 611 && mouseY < 641 && numRearrange < 3) {
       if (rearranging) { // stops/starts the rearrange mode
         rearranging = false;
@@ -140,12 +139,11 @@ void mouseReleased() {
     board.reassignTiles();
     moving = false;
   }
-
 }
 
 void keyPressed() {
 
-  if ((easyMode || normalMode || hardMode) && !(atInstructions)) { // so players can't move around the tiles when the instructions are covering the board
+  if ((easyMode || normalMode || hardMode) && !(atInstructions) && !(rearranging)) { // so players can't move around the tiles when the instructions are covering the board or in rearrange mode
     if (keyCode == 38 || keyCode == 87) {
       board.move("up");
     } else if (keyCode == 40 || keyCode == 83) {
@@ -156,20 +154,12 @@ void keyPressed() {
       board.move("right");
     }
 
-    if (board.moved) {// if at least one tile moved/merged, add another to the board and check if the game ends
+    if (board.moved &&
+      (keyCode == 38 || keyCode == 87 || keyCode == 40 || keyCode == 83 ||
+      keyCode == 37 || keyCode == 65 || keyCode == 39 || keyCode == 68)) {// if at least one tile moved/merged, add another to the board and check if the game ends
       board.newTile();
       board.checkEnd();
       moves++;
     }
   }
-}
-
-
-
-
-
-void mouseDragged() {
-
-
-
 }

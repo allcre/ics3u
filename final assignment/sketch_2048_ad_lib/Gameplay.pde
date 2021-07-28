@@ -246,7 +246,7 @@ class Gameplay {
       }
     }
     moved = false; // shuffling isn't a real game move so a tile won't be added
-    score += 2000; // add shuffling bonus to score
+    score += 500; // add shuffling bonus to score
   }
 
 
@@ -282,7 +282,7 @@ class Gameplay {
       } else {
         playingTiles[newI][newJ] = new Tile(playingTiles[originalI][originalJ].value, tileCoordinates[newI][newJ][0], tileCoordinates[newI][newJ][1]); // make a new tile in the new spot
         playingTiles[originalI][originalJ] = null; // erase the old tile
-        score -= 1000; // 1000 score penalty for every tile that is moved
+        score -= 500; // 500 point penalty for every tile that is moved
       }
     }
   }
@@ -329,6 +329,7 @@ class Gameplay {
           if (tileValue == 2048) { // if a 2048 tile is present the game ends and the player won
             gameEnd = true;
             won = true;
+            score += 50000; // 50k point bonus for making a 2048 tile
           } else {
             if (i != 0 && playingTiles[i-1][j] != null) { // checking if an up move is possible
               if (tileValue == playingTiles[i-1][j].value) {
