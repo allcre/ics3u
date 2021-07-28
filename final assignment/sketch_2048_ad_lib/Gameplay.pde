@@ -65,6 +65,14 @@ class Gameplay {
 
         // make a new tile at the coordinates that correspond with the indexes
         playingTiles[i][j] = new Tile(value, tileCoordinates[i][j][0], tileCoordinates[i][j][1]);
+
+        // shake a tile when it's made (for visibility purposes)
+        int wiggleCounter = 0; // number of time a tile shakes 
+        while (wiggleCounter < 10) {
+          playingTiles[i][j].wiggle();
+          wiggleCounter++;
+        }
+
         tileMade = true; // a tile was succesfully made
       }
     } while (!(tileMade));
@@ -274,6 +282,21 @@ class Gameplay {
     // update high score
     if (score > highScore)
       highScore = score;
+      
+    // shake tiles that were merged this turn
+    for (int i = 0; i < playingTiles.length; i++) {
+      for (int j = 0; j < playingTiles[0].length; j++) {
+        if (playingTiles[i][j] != null) {
+            if (playingTiles[i][j].alreadyMerged) { // if a tile was merged
+            int wiggleCounter = 0; // number of time a tile shakes 
+            while (wiggleCounter < 10) {
+              playingTiles[i][j].wiggle(); // shake
+              wiggleCounter++;
+            }
+          }
+        }
+      }
+    }
   }
 
   // shuffles all tiles on the board

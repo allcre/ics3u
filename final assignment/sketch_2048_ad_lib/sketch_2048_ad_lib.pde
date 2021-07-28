@@ -28,6 +28,8 @@ int originalI, originalJ, newI, newJ; // used for getting the indexes of tiles w
 void setup() {
   // window size
   size(675, 675);
+  // frame rate (slower to make tile shaking more pronounced)
+  frameRate(40);
 
   // load font and assign navy colour variable
   textFont(loadFont("ProcessingSansPro-Semibold-48.vlw"));
@@ -58,7 +60,7 @@ void draw() {
     // basic game setup that draws the playing board and other static features for every mode
     gameSetup();
     board.plainBoard();
-
+  
     if (easyMode) // if playing in easy mode, display the appropriate easy mode text
       easyModeText();
 
@@ -88,6 +90,7 @@ void draw() {
   // if the help icon was clicked, show instructions
   if (atInstructions)
     instructions();
+    
 }
 
 // method that runs when the mouse is pressed
@@ -132,7 +135,7 @@ void mousePressed() {
 
   // gets the indexes of the tile that is clicked while rearranging tiles, but a tile is not being moved at the moment (only applicable for easy mode)
   if (easyMode && !(atInstructions) && rearranging && (!(moving))) {
-    if (mouseX > 116 && mouseX < (width - 116) && mouseY > 117 && mouseY < (height - 82)) { // if the mouse is within the board
+    if (mouseX > 116 && mouseX < (width - 116) && mouseY > 133 && mouseY < (height - 99)) { // if the mouse is within the board
       // calling methods to store the index values in variables
       originalI = board.getI(mouseY);
       originalJ = board.getJ(mouseX);
