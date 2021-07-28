@@ -1,80 +1,83 @@
-boolean boardMade;
-
+// Gameplay object, includes all tiles in play and the board they're drawn on
 class Gameplay {
 
-  // array with all tiles
-  Tile[][] playingTiles;
+  // data
 
-  // array that stores the placeholder tiles
-  Tile[][] placeholders;
-
-  int value;
-  int i = 0;
+  Tile[][] playingTiles; // array with all playing tiles
+  Tile[][] placeholders; // array that stores the placeholder tiles
+  int[][][] tileCoordinates; // an array with the x and y coordinates of the top left corner of each possible tile position
+  int value; // value of a tile
+  int i = 0; //indexes
   int j = 0;
+
   String direction; // direction of move
   boolean moved; // tracks if at least one tile was merged each round
-  int score = 0;
-  int highScore;
-  boolean gameEnd;
-  boolean won;
+  int score = 0; // score is 0 to start
+  int highScore; // high score
+  boolean gameEnd; // is the game over
+  boolean won; // is the game won
 
-  // an array with the x and y coordinates for the top left corner of each tile position
-  int[][][] tileCoordinates;
-
-
+  // constructor
   Gameplay() {
+    // initialize arrays
     playingTiles = new Tile[4][4];
     placeholders = new Tile[4][4];
+    tileCoordinates = new int[4][4][2];
   }
 
-  // draws the plain board
+  // draws a plain board
   void plainBoard() {
-    // drawing the game board
     // base rectangle
     fill(navy);
     noStroke();
     rect(100, 117, 476, 476, 11);
 
-    tileCoordinates = new int[4][4][2];
-
-    // placeholder rectangles and populating tile coordinates array
+    // drawing placeholder rectangles and populating the tile coordinates array
     for (int i  = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         tileCoordinates[i][j][0] = 116 + j * 114;
         tileCoordinates[i][j][1] = 133 + i * 114;
         placeholders[i][j] = new Tile(tileCoordinates[i][j][0], tileCoordinates[i][j][1]);
-        placeholders[i][j].display();
+        placeholders[i][j].display(); // show tiles
       }
     }
   }
 
   // adding a new random tile into gameplay
   void newTile() {
-    boolean tileMade = false;
+    boolean tileMade = false; // at first, a tile hasn't been made
+
+    // repeat until a tile has been made
     do {
+      // random values 0-3
       i = (int) random(4);
       j = (int) random(4);
 
+      // random value 0-1 to decide if the tile will be a 2 or a 4
       float randomValue = random(1);
 
-      if (playingTiles[i][j] == null) {
+      if (playingTiles[i][j] == null) { // if the spot is empty
+        // assign value (90% chance of being a 2 and a 10% chance of being a 4)
         if (randomValue < 0.9)
           value = 2;
         else
           value = 4;
 
+        // make a new tile at the coordinates that correspond with the indexes
         playingTiles[i][j] = new Tile(value, tileCoordinates[i][j][0], tileCoordinates[i][j][1]);
-        tileMade = true;
+        tileMade = true; // a tile was succesfully made
       }
     } while (!(tileMade));
   }
 
+  // draws all tiles
   void showTiles() {
-    for (int i = 0; i < playingTiles.length; i++) {
-      for (int j = 0; j < playingTiles[0].length; j++) {
-        if (playingTiles[i][j] != null) {
-          playingTiles[i][j].display();
-        }
+    for (int i = 0; i < playingTiles.length; i++) { // for each row
+      for (int j = 0; j < playingTiles[0].length; j++) { // for each column
+
+        if (playingTiles[i][j] != null)  // if there is a tile
+          playingTiles[i][j].display(); // call display function
+
       }
     }
   }
@@ -130,7 +133,7 @@ class Gameplay {
                 playingTiles[i][j] = null;
                 i += 1; // to account for if the tile can move down multiple spaces
                 moved = true;
-              } else if (playingTiles[i+1][j].value == playingTiles[i][j].value && i != 3 
+              } else if (playingTiles[i+1][j].value == playingTiles[i][j].value && i != 3
                 && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i+1][j].alreadyMerged)) { //if both tiles weren't already merged
                 playingTiles[i+1][j] = new Tile(playingTiles[i+1][j].value * 2, tileCoordinates[i+1][j][0], tileCoordinates[i+1][j][1]);
                 playingTiles[i+1][j].alreadyMerged = true; // keeps track if a tile was merged this round
@@ -149,7 +152,7 @@ class Gameplay {
 
     case "left":
       for (int j = 0; j < playingTiles[0].length; j++) { // traverse tiles from left to right
-        for (int i = 0; i < playingTiles.length; i++) {  
+        for (int i = 0; i < playingTiles.length; i++) {
 
           if (playingTiles[i][j] != null) {
             boolean canMove = true;
@@ -161,7 +164,7 @@ class Gameplay {
                 playingTiles[i][j] = null;
                 j -= 1; // to account for if the tile can move left multiple spaces
                 moved = true;
-              } else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0 
+              } else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0
                 && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i][j-1].alreadyMerged)) { //if both tiles weren't already merged
                 playingTiles[i][j-1] = new Tile(playingTiles[i][j-1].value * 2, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
                 playingTiles[i][j-1].alreadyMerged = true; // keeps track that this tile has been merged this turn
@@ -180,7 +183,7 @@ class Gameplay {
 
     case "right": // could switch to default maybe
       for (int j = 3; j >= 0; j--) { // traverse tiles from right to left
-        for (int i = 0; i < playingTiles.length; i++) {  
+        for (int i = 0; i < playingTiles.length; i++) {
 
           if (playingTiles[i][j] != null) {
             boolean canMove = true;
@@ -192,7 +195,7 @@ class Gameplay {
                 playingTiles[i][j] = null;
                 j += 1; // to account for if the tile can move left multiple spaces
                 moved = true;
-              } else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3 
+              } else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3
                 && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i][j+1].alreadyMerged)) { //if both tiles weren't already merged
                 playingTiles[i][j+1] = new Tile(playingTiles[i][j+1].value * 2, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
                 playingTiles[i][j+1].alreadyMerged = true;
@@ -262,7 +265,7 @@ class Gameplay {
         }
       }
     }
-  } 
+  }
 
 
   void moveTiles() {
@@ -287,7 +290,7 @@ class Gameplay {
     }
   }
 
-  // returns the indexes of the position that was clicked 
+  // returns the indexes of the position that was clicked
   int getJ(float x) {
 
     for (int j = 0; j < playingTiles[0].length; j++) {
@@ -354,7 +357,7 @@ class Gameplay {
               }
             }
           }
-        } else { // shrten this 
+        } else { // shrten this
           if (!(won)) {
             gameEnd = false;
           }
@@ -368,7 +371,7 @@ class Gameplay {
 
     if (won)
       msg = "you won! :)";
-    else 
+    else
     msg = "you lost :(";
 
     // drawing the square that displays the message

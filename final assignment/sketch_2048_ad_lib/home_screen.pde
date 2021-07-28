@@ -1,6 +1,6 @@
 // sets up the home screen and resets all games
 
-// data
+// global data (needed for running buttons)
 int modeX, easyY, normalY, hardY; // button coordinates
 int modeWidth, modeHeight, modeSpacing; // button measurements
 
