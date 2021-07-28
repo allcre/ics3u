@@ -79,8 +79,8 @@ class Gameplay {
     }
   }
 
-  void move(String tempDirection) {
-    direction = tempDirection; // this might be unneccessary
+  void move(String direction) {
+
     moved = false; // reset moved boolean
 
     switch (direction) {
@@ -265,47 +265,50 @@ class Gameplay {
   } 
 
 
-  void moveTiles(int iTile, int jTile) {
-
-    for (int i = 0; i < playingTiles.length; i++) {
-      for (int j = 0; j < playingTiles[0].length; j++) {
-        if (playingTiles[i][j] != null) {
-
-          playingTiles[i][j] = new Tile(playingTiles[i][j].value, mouseX - 50.5, mouseY - 50.5);
-        }
-      }
+  void moveTiles() {
+    if (playingTiles[originalI][originalJ] != null) {
+      playingTiles[originalI][originalJ].x = mouseX - 50.5;
+      playingTiles[originalI][originalJ].y = mouseY - 50.5;
     }
   }
 
   void reassignTiles() {
+
+    if (playingTiles[originalI][originalJ] != null) { // if the player wasn't dragging an empty area
+
+      if (newI == 24 || newJ == 24 || playingTiles[newI][newJ] != null) { // if the position is not on the playing board, or the spot is taken, redraw the tile in it's original spot
+        playingTiles[originalI][originalJ].x = tileCoordinates[originalI][originalJ][0];
+        playingTiles[originalI][originalJ].y = tileCoordinates[originalI][originalJ][1];
+      } else {
+        playingTiles[newI][newJ] = new Tile(playingTiles[originalI][originalJ].value, tileCoordinates[newI][newJ][0], tileCoordinates[newI][newJ][1]); // make a new tile in the new spot
+        playingTiles[originalI][originalJ] = null; // erase the old tile
+        score -= 1000; // 1000 score penalty for every tile that is moved
+      }
+    }
   }
 
   // returns the indexes of the position that was clicked 
-  int getI(float x) {
+  int getJ(float x) {
 
-    for (int i = 0; i < playingTiles.length; i++) {
-      for (int j = 0; j < playingTiles[0].length; j++) {
+    for (int j = 0; j < playingTiles[0].length; j++) {
 
-        if ((tileCoordinates[i][j][0] + 107.5) >= x && x >= tileCoordinates[i][j][1]) { // if the x value is within the range of a tile spot from the coordinates array, 107.5 accounts fro gaps between the tiles
-          return i;
-        } 
+      if (x >= (tileCoordinates[0][j][0] - 6.5) && x <= (tileCoordinates[0][j][0] + 107.5)) {
+        return j;
       }
     }
-    
+
     return 24; // stops an error from popping up
   }
 
-  int getJ(float y) {
-    
-    for (int i = 0; i < playingTiles.length; i++) {
-      for (int j = 0; j < playingTiles[0].length; j++) {
+  int getI(float y) {
 
-        if ( y < tileCoordinates[i][j][1] + 101) { // if the y value is within the range of a tile spot from the coordinates array
-          return j;
-        } 
+    for (int i = 0; i < playingTiles.length; i++) {
+
+      if (y >= (tileCoordinates[i][0][1] - 6.5) && y <= (tileCoordinates[i][0][1] + 107.5)) {
+        return i;
       }
     }
-    
+
     return 24; // stops an error from popping up
   }
 

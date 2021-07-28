@@ -12,6 +12,11 @@ void homeScreen() {
   moves = 0;
   rearranging = false;
   numRearrange = 0;
+  originalI = 0;
+  originalJ = 0;
+  newI = 0;
+  newJ = 0;
+  moving = false;
   
   textFont(loadFont("ProcessingSansPro-Semibold-48.vlw"));
   fill(255); // white

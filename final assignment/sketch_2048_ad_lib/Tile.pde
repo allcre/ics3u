@@ -68,7 +68,7 @@ class Tile {
     
     fill(bgColour);
     noStroke();
-    rect(- 50.5, -50.5, tileWidth, tileWidth, 5);
+    rect(-50.5, -50.5, tileWidth, tileWidth, 5);
   
     // number on the tile
     textAlign(CENTER, CENTER);
