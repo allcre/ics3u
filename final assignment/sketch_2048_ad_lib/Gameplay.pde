@@ -82,21 +82,29 @@ class Gameplay {
     }
   }
 
+  // moves and merges all tiles according to the direction argument
   void move(String direction) {
 
     moved = false; // reset moved boolean
 
-    switch (direction) {
+    switch (direction) { // for the different cases of direction
+
+    // moving up
     case "up":
-      for (int i = 0; i < playingTiles.length; i++) { // traverse tiles from top to bottom
+
+      // traverse tiles from top to bottom, left to right
+      for (int i = 0; i < playingTiles.length; i++) {
         for (int j = 0; j < playingTiles[0].length; j++) {
 
-          if (playingTiles[i][j] != null) {
-            boolean canMove = true;
+          if (playingTiles[i][j] != null) { // if the spot is not empty
+
+            boolean canMove = true; // a tile can move into the spot
             playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
 
+            // while a tile can move and the tile is not located at the top of the board, because those tiles have no moves
+            while ((canMove) && i != 0) {
 
-            while ((canMove) && i != 0) { // i can't equal 0 because that is the top row, so no moves for those tiles are possible
+              // if the spot above the tile is empty and the current tile has not already been merged 
               if (playingTiles[i-1][j] == null && !(playingTiles[i][j].alreadyMerged)) { // tiles can't move into a blank space once they've alreay been merged
                 playingTiles[i-1][j] = new Tile(playingTiles[i][j].value, tileCoordinates[i-1][j][0], tileCoordinates[i-1][j][1]);
                 playingTiles[i][j] = null;
