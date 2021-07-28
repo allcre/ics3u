@@ -1,5 +1,5 @@
+// draws basic elements that are shown for any game mode
 void gameSetup() {
-
   // top text for the name of the game
   fill(255);
   textSize(45);

@@ -1,20 +1,29 @@
+// tile object
 class Tile {
 
-  int tileWidth = 101;
-  color bgColour, textColour;
-  int value;
-  boolean alreadyMerged;
-  float x, y;
+  // data
+  int tileWidth = 101; // size
+  color bgColour, textColour; // colour of the tile and its text
+  int value; // value of the tile in the gme
+  boolean alreadyMerged; // tracks if a tile is a product of two merged tiles
+  float x, y; // position of the tile
 
+  // constructor for placeholder tiles with no value
   Tile(float tempX, float tempY) {
-    bgColour = color(#006796);
-    textColour = bgColour;
+    bgColour = color(#006796); // medium blue
+    textColour = bgColour; // same text colour as background colour so text is hidden
+    // passing arguments
     x = tempX;
     y = tempY;
   }
 
+  // constructor for playing tiles
   Tile (int tempValue, float tempX, float tempY) {
+    // passing arguments
     value = tempValue;
+    x = tempX;
+    y = tempY;
+
     // tile colours based on value
     switch (value) {
     case 2:
@@ -39,42 +48,42 @@ class Tile {
       bgColour = color(#759FBC); // light blue
     }
 
-    x = tempX;
-    y = tempY;
-    textColour = color(255);
+    textColour = color(255); // white text
   }
 
+  // draw a tile
   void display() {
-    fill(bgColour);
+    fill(bgColour); // colour
     rect(x, y, tileWidth, tileWidth, 5);
 
-    // number on the tile
+    // centered number on the tile
     textAlign(CENTER, CENTER);
     fill(textColour);
     textSize(35);
     text(value, x + tileWidth/2, y + tileWidth/2);
   }
-  
-  // draws a tile that is wiggling
+
+  // draw a wiggling tile
   void wiggle() {
-    pushMatrix();
-    translate(x + 50.5, y + 50.5);
-    
+    pushMatrix(); // new plane
+    translate(x + 50.5, y + 50.5); // move plane to the center of the tile
+
+    // rotate either backwards or forwards by 5 degrees
     float direction = random(1);
     if (direction < 0.5)
       rotate(radians(-5));
       else
       rotate(radians(5));
-    
-    fill(bgColour);
+
+    fill(bgColour); // colour
     noStroke();
     rect(-50.5, -50.5, tileWidth, tileWidth, 5);
-  
+
     // number on the tile
     textAlign(CENTER, CENTER);
     fill(textColour);
     textSize(35);
-    text(value, 0, 0);
-    popMatrix();
+    text(value, 0, 0); // centered text
+    popMatrix(); // put the plane back
   }
 }

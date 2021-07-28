@@ -1,9 +1,12 @@
+// score box object
 class ScoreBox {
 
+  // constructor with arguments to pass the text at the top of the box and and the score to display
   ScoreBox(String scoreType, int score) {
     float x;
     float y;
 
+    // coordinates for the two boxes
     if (scoreType == "high score") {
       x = 385.88;
       y = 22;
@@ -16,7 +19,7 @@ class ScoreBox {
     noStroke();
     fill(navy);
     rect(x, y, 122.62, 53, 10);
-
+    
     // text on the box
     fill(255);
     textSize(16);
