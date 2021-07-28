@@ -18,7 +18,7 @@ class Tile {
     // tile colours based on value
     switch (value) {
     case 2:
-      bgColour = color(#F2E4BB); // yellow
+      bgColour = color(#EFDDA9); // yellow
       break;
     case 4:
       bgColour = color(#D9BCA3); // beige
