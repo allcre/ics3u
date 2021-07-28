@@ -407,26 +407,23 @@ class Gameplay {
           } else { // otherwise check if any moves can be made
 
             if (i != 0 && playingTiles[i-1][j] != null) { // checking if an up move is possible
-              if (tileValue == playingTiles[i-1][j].value) {
+              if (tileValue == playingTiles[i-1][j].value)
                 gameEnd = false;
-              }
             }
 
             if (i != 3 && playingTiles[i+1][j] != null) { // checking if a down move is possible
-              if (tileValue == playingTiles[i+1][j].value) {
+              if (tileValue == playingTiles[i+1][j].value)
                 gameEnd = false;
-              }
             }
 
             if (j != 0 && playingTiles[i][j-1] != null) { // checking if a left move is possible
-              if (tileValue == playingTiles[i][j-1].value) {
+              if (tileValue == playingTiles[i][j-1].value) 
                 gameEnd = false;
-              }
             }
+
             if (j != 3 && playingTiles[i][j+1] != null) { // checking if a right move is possible
-              if (tileValue == playingTiles[i][j+1].value) {
+              if (tileValue == playingTiles[i][j+1].value)
                 gameEnd = false;
-              }
             }
           }
         }
