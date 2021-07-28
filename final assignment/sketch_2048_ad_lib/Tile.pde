@@ -17,7 +17,7 @@ class Tile {
     y = tempY;
   }
 
-  // constructor for playing tiles
+  // constructor for playing tiles; aruguments are the tile value and its coordinates
   Tile (int tempValue, float tempX, float tempY) {
     // passing arguments
     value = tempValue;

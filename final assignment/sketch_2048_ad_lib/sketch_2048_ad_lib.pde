@@ -1,5 +1,11 @@
 // main file
 
+/*
+2048: Ad Libitium
+Final Assignment - ICS3U
+Allison Cretel
+*/
+
 color navy; // navy colour
 boolean atHomeScreen = true; // start at home screen
 boolean atInstructions = false; // by default the instructions page is not open
