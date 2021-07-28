@@ -1,5 +1,4 @@
-boolean atInstructions = false;
-
+// draws the box with instructions
 void instructions() {
   // backdrop
   noStroke();

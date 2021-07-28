@@ -1,6 +1,7 @@
 // main file
 
 boolean atHomeScreen = true; // starting screen is the home one
+boolean atInstructions = false; // by default the instructions page is not open
 
 // scorebox objects for displaying the current score and the high score
 ScoreBox currentScoreBox;
