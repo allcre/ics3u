@@ -19,7 +19,7 @@ class ScoreBox {
     noStroke();
     fill(navy);
     rect(x, y, 122.62, 53, 10);
-    
+
     // text on the box
     fill(255);
     textSize(16);

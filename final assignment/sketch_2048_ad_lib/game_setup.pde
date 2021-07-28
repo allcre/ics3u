@@ -9,5 +9,4 @@ void gameSetup() {
   // boxes that show current score and high score
   currentScoreBox = new ScoreBox("current score", board.score);
   highScoreBox = new ScoreBox("high score", board.highScore);
-
 }
