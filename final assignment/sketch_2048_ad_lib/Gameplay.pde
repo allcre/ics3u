@@ -90,7 +90,7 @@ class Gameplay {
 
     switch (direction) { // for the different cases of direction
 
-    // moving up
+      // moving up
     case "up":
 
       // traverse tiles from top to bottom, left to right
@@ -126,28 +126,25 @@ class Gameplay {
                 playingTiles[i][j] = null; // erase the tile that was merged
                 i -= 1; // accounts for if the tile can move up
                 moved = true; // a move has been made
-              }
-
-              else // otherwise the tile has no moves
-                canMove = false;
-
+              } else // otherwise the tile has no moves
+              canMove = false;
             }
           }
         }
       }
       break;
 
-    /* each of the following cases for the other directions are similar to the up case and follow the same format
-    the differences are:
-    - the order the tiles are traversed
-    - which spot gets checked if its empty
-    - which spot a merged tile is made in
-    */
+      /* each of the following cases for the other directions are similar to the up case and follow the same format
+       the differences are:
+       - the order the tiles are traversed
+       - which spot gets checked if its empty
+       - which spot a merged tile is made in
+       */
 
-    // moving down
+      // moving down
     case "down":
 
-     // traverse tiles from bottom to top, left to right
+      // traverse tiles from bottom to top, left to right
       for (int i = 3; i >= 0; i--) {
         for (int j = 0; j < playingTiles[0].length; j++) {
 
@@ -172,13 +169,15 @@ class Gameplay {
               else if (playingTiles[i+1][j].value == playingTiles[i][j].value && i != 3
                 // and if both tiles have not been merged already
                 && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i+1][j].alreadyMerged)) { //if both tiles weren't already merged
+
+                // make a new tile in the spot below with the combined value of the merged tiles
                 playingTiles[i+1][j] = new Tile(playingTiles[i+1][j].value * 2, tileCoordinates[i+1][j][0], tileCoordinates[i+1][j][1]);
-                playingTiles[i+1][j].alreadyMerged = true; // keeps track if a tile was merged this round
-                score += playingTiles[i+1][j].value;
-                playingTiles[i][j] = null;
-                i += 1;
-                moved = true;
-              } else {
+                playingTiles[i+1][j].alreadyMerged = true; // tile has been merged
+                score += playingTiles[i+1][j].value; // update score
+                playingTiles[i][j] = null; // erase one tile
+                i += 1; // check if the same tile can move down more
+                moved = true; // move has been made
+              } else { // otherwise the tile can't move
                 canMove = false;
               }
             }
@@ -187,68 +186,92 @@ class Gameplay {
       }
       break;
 
+      // moving to the left
     case "left":
-      for (int j = 0; j < playingTiles[0].length; j++) { // traverse tiles from left to right
+
+      // traverse tiles left to right, top to bottom
+      for (int j = 0; j < playingTiles[0].length; j++) {
         for (int i = 0; i < playingTiles.length; i++) {
 
-          if (playingTiles[i][j] != null) {
-            boolean canMove = true;
-            playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
+          if (playingTiles[i][j] != null) { // if the spot has a tile
+            boolean canMove = true; // check for moves
 
-            while ((canMove) && j != 0) { // j can't equal 0 because that is the left most column, so no moves for those tiles are possible
-              if (playingTiles[i][j-1] == null && !(playingTiles[i][j].alreadyMerged)) { // tiles can't move into a blank space once they've alreay been merged
+            // while moves are possible and the tile is not on the left edge of the board
+            while ((canMove) && j != 0) {
+
+              // if the spot to the left is empty
+              if (playingTiles[i][j-1] == null) {
+                // duplicate the tile into that spot
                 playingTiles[i][j-1] = new Tile(playingTiles[i][j].value, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
+                // erase old tile
                 playingTiles[i][j] = null;
-                j -= 1; // to account for if the tile can move left multiple spaces
-                moved = true;
-              } else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0
-                && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i][j-1].alreadyMerged)) { //if both tiles weren't already merged
-                playingTiles[i][j-1] = new Tile(playingTiles[i][j-1].value * 2, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
-                playingTiles[i][j-1].alreadyMerged = true; // keeps track that this tile has been merged this turn
-                score += playingTiles[i][j-1].value;
-                playingTiles[i][j] = null;
-                j -= 1;
-                moved = true;
-              } else {
-                canMove = false;
+                j -= 1; // check if the new tile can move
+                moved = true; // move made
               }
+
+              // if horizontally adjacent tiles have the same value and both weren't already merged
+              else if (playingTiles[i][j-1].value == playingTiles[i][j].value && j != 0
+                && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i][j-1].alreadyMerged)) {
+
+                // new tile with their combined value
+                playingTiles[i][j-1] = new Tile(playingTiles[i][j-1].value * 2, tileCoordinates[i][j-1][0], tileCoordinates[i][j-1][1]);
+                playingTiles[i][j-1].alreadyMerged = true; // merged tile
+                score += playingTiles[i][j-1].value; // update score
+                playingTiles[i][j] = null; // erase one tile
+                j -= 1; // check if the new tile can move
+                moved = true; // move made
+              } else // otherwise no moves possible
+              canMove = false;
             }
           }
         }
       }
       break;
 
-    case "right": // could switch to default maybe
-      for (int j = 3; j >= 0; j--) { // traverse tiles from right to left
+      // moving right
+    case "right":
+
+      // traverse tiles right to left, top to bottom
+      for (int j = 3; j >= 0; j--) {
         for (int i = 0; i < playingTiles.length; i++) {
 
-          if (playingTiles[i][j] != null) {
-            boolean canMove = true;
-            playingTiles[i][j].alreadyMerged = false; // reset the status of each tile to unmerged
+          if (playingTiles[i][j] != null) { // if there's a tile
+            boolean canMove = true; // check for moves
 
-            while ((canMove) && j != 3) { // j can't equal 3 because that is the right most column, so no moves for those tiles are possible
-              if (playingTiles[i][j+1] == null && !(playingTiles[i][j].alreadyMerged)) { // tiles can't move into a blank space once they've alreay been merged
+            // while moves are possible and not a right-edge tile
+            while ((canMove) && j != 3) {
+
+              // if there's an empty spot to the right
+              if (playingTiles[i][j+1] == null) {
+                // duplicate tile in the spot
                 playingTiles[i][j+1] = new Tile(playingTiles[i][j].value, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
+                // erase the old
                 playingTiles[i][j] = null;
-                j += 1; // to account for if the tile can move left multiple spaces
-                moved = true;
-              } else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3
-                && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i][j+1].alreadyMerged)) { //if both tiles weren't already merged
-                playingTiles[i][j+1] = new Tile(playingTiles[i][j+1].value * 2, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
-                playingTiles[i][j+1].alreadyMerged = true;
-                score += playingTiles[i][j+1].value;
-                playingTiles[i][j] = null;
-                j += 1;
-                moved = true;
-              } else {
-                canMove = false;
+                j += 1; // check if tile can move more
+                moved = true; // a move was made
               }
+
+              // if horzontally adjacent tiles have the same value and neither has been merged this turn
+              else if (playingTiles[i][j+1].value == playingTiles[i][j].value && j != 3
+                && !(playingTiles[i][j].alreadyMerged) && !(playingTiles[i][j+1].alreadyMerged)) {
+
+                // new tile with their combined value
+                playingTiles[i][j+1] = new Tile(playingTiles[i][j+1].value * 2, tileCoordinates[i][j+1][0], tileCoordinates[i][j+1][1]);
+                playingTiles[i][j+1].alreadyMerged = true; // merged
+                score += playingTiles[i][j+1].value; // update score
+                playingTiles[i][j] = null; // erase one tile
+                j += 1; // check for moves
+                moved = true; // move was made
+              } else // otherwise no moves possible
+              canMove = false;
             }
           }
         }
       }
       break;
     }
+
+    // update high score
     if (score > highScore)
       highScore = score;
   }
@@ -322,7 +345,7 @@ class Gameplay {
       } else {
         playingTiles[newI][newJ] = new Tile(playingTiles[originalI][originalJ].value, tileCoordinates[newI][newJ][0], tileCoordinates[newI][newJ][1]); // make a new tile in the new spot
         playingTiles[originalI][originalJ] = null; // erase the old tile
-        score -= 500; // 500 point penalty for every tile that is moved
+        score -= 250; // point penalty for every tile that is moved
       }
     }
   }
@@ -409,7 +432,7 @@ class Gameplay {
     if (won)
       msg = "you won! :)";
     else
-    msg = "you lost :(";
+      msg = "you lost :(";
 
     // drawing the square that displays the message
     noStroke();
