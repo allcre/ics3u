@@ -1,6 +1,7 @@
 // main file
 
-boolean atHomeScreen = true; // starting screen is the home one
+color navy; // navy colour
+boolean atHomeScreen = true; // start at home screen
 boolean atInstructions = false; // by default the instructions page is not open
 
 // scorebox objects for displaying the current score and the high score
@@ -27,6 +28,10 @@ int originalI, originalJ, newI, newJ; // used for getting the indexes of tiles w
 void setup() {
   // window size
   size(675, 675);
+
+  // load font and assign navy colour variable
+  textFont(loadFont("ProcessingSansPro-Semibold-48.vlw"));
+  navy = color(#003249); // assign navy colour variables
 
   // make a board to start
   board = new Gameplay();
